@@ -1,0 +1,17 @@
+# Global
+node_modules/
+dist/
+.env
+.env.local
+.DS_Store
+
+# Vite + React
+frontend/.vite/
+frontend/dist/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
