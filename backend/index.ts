@@ -13,7 +13,21 @@ dotenv.config();
 const app: Application = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors());
+
+// Allowlist of domains that can access your backend
+const allowedOrigins = process.env.FRONTEND_URL?.split(',') || [];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps or curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // Basic health check
