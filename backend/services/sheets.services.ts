@@ -19,3 +19,7 @@ export const getSheetData = async (sheetId: string, range: string): Promise<stri
     throw new Error("Failed to fetch data from Google Sheets");
   }
 };
+export const getTagOptions = async (): Promise<string[]> => {
+  const rows = await getSheetData(process.env.GOOGLE_SHEET_ID!, "TagOptions!A1:A");
+  return rows.map((row) => row[0]).filter(Boolean);
+};

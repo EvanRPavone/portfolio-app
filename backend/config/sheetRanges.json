@@ -2,5 +2,6 @@
   "Projects": { "range": "Projects!A1:H" },
   "Images": { "range": "Images!A1:B" },
   "Customization": { "range": "Customization!A1:E2" },
-  "UserInfo": { "range": null }
+  "UserInfo": { "range": "UserInfo!A1:H2" },
+  "TagOptions": {"range": "TagOptions!A1:A"}
 }
