@@ -1,18 +1,21 @@
 import { createTheme } from "@mui/material/styles";
 
-const theme = createTheme({
-    palette: {
-        mode: "light",
-        primary: {
-            main: "#1976d2", // Replace with dynamic from customization later
-        },
-        secondary: {
-            main: "#f50057",
-        },
-    },
-    typography: {
-        fontFamily: "Inter, sans-serif",
-    },
-});
+export const getCustomTheme = (customization: Record<string, string>) => {
+    const isDark = customization.themestyle.toLowerCase() === "dark";
 
-export default theme;
+    return createTheme({
+        palette: {
+            mode: isDark ? "dark" : "light",
+            primary: {
+                main: customization.primarycolor,
+            },
+            secondary: {
+                main: customization.secondarycolor,
+            },
+        },
+        typography: {
+            fontFamily: customization.font,
+        },
+    });
+};
+

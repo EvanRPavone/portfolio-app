@@ -9,5 +9,6 @@ export const getProjects = () => API.get("/projects");
 export const getUserInfo = () => API.get("/userinfo");
 export const getImages = () => API.get("/images");
 export const getCustomization = () => API.get("/customization");
+export const getTags = () => API.get("/tags");
 
 export default API;
