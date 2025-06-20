@@ -1,47 +1,68 @@
 import express, { Application, Request, Response } from "express";
+// import * as session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import userRoutes from "./routes/user.routes";
+// Load environment variables
+dotenv.config();
+
+// Route imports
 import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
 import projectRoutes from "./routes/projects.routes";
 import imagesRoutes from "./routes/images.routes";
 import customizationRoutes from "./routes/customization.routes";
 
-dotenv.config();
-
 const app: Application = express();
 const port = process.env.PORT || 3001;
 
+// CORS config
+const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [];
 
-// Allowlist of domains that can access your backend
-const allowedOrigins = process.env.FRONTEND_URL?.split(',') || [];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // allow requests with no origin (like mobile apps or curl)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+// Body parser
 app.use(express.json());
 
-// Basic health check
+const session = require("express-session");
+// Session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "default_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
+
+// Health check
 app.get("/", (_req: Request, res: Response) => {
-    res.send("✅ Portfolio backend is running!");
+  res.send("✅ Portfolio backend is running!");
 });
 
-// Routes
+// Mount routes
 app.use("/api", authRoutes);
 app.use("/api", projectRoutes);
 app.use("/api", userRoutes);
 app.use("/api", imagesRoutes);
 app.use("/api", customizationRoutes);
 
+// Start server
 app.listen(port, () => {
-    console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`🚀 Server running at http://localhost:${port}`);
 });

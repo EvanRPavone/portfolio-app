@@ -1,14 +1,21 @@
 import express from "express";
 import { getProjects } from "../controllers/projects.controller";
-import { getTagOptions } from '../services/sheets.services';
+import { getTagOptions } from "../services/sheets.services";
 
 const router = express.Router();
 
 router.get("/projects", getProjects);
 
-router.get("/tags", async (_req, res) => {
+router.get("/tags", async (req, res) => {
   try {
-    const tags = await getTagOptions();
+    const accessToken = req.session.tokens?.access_token;
+
+    if (!accessToken) {
+      res.status(401).json({ error: "Unauthorized. Missing access token." });
+      return;
+    }
+
+    const tags = await getTagOptions(accessToken);
     res.json(tags);
   } catch (err) {
     console.error("❌ Error fetching tag options:", err);
@@ -17,4 +24,3 @@ router.get("/tags", async (_req, res) => {
 });
 
 export default router;
-

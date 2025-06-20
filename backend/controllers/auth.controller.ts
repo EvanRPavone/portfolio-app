@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
-import { OAuth2Client } from "google-auth-library";
-import dotenv from "dotenv";
+/// <reference types="../types/express-session" />
+import { Response, Request } from "express";
+import { google } from "googleapis";
 import { googleClient } from "../config/googleClient";
 
-dotenv.config();
-
-export const login = (req: Request, res: Response): void => {
+// GET /api/auth
+export const login = (_req: Request, res: Response): void => {
   const scopes = [
     "https://www.googleapis.com/auth/spreadsheets.readonly",
     "https://www.googleapis.com/auth/drive.readonly",
@@ -18,12 +17,10 @@ export const login = (req: Request, res: Response): void => {
     prompt: "consent",
   });
 
-  res.send(`
-    <h2>🔐 Click below to log in with Google:</h2>
-    <a href="${url}" target="_blank">Login with Google</a>
-  `);
+  res.redirect(url);
 };
 
+// GET /api/auth/callback
 export const handleCallback = async (req: Request, res: Response): Promise<void> => {
   const code = req.query.code as string;
 
@@ -36,12 +33,40 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
     const { tokens } = await googleClient.getToken(code);
     googleClient.setCredentials(tokens);
 
-    console.log("✅ Tokens received:");
-    console.log(tokens);
+    const oauth2 = google.oauth2("v2");
+    const userInfoResponse = await oauth2.userinfo.get({ auth: googleClient });
 
-    res.send("✅ Login successful. Tokens received!");
+    const { id, name, email, picture } = userInfoResponse.data;
+
+    // Save user and tokens into session (auto-typed via index.d.ts)
+    req.session.user = {
+      id: id || "",
+      name: name || "",
+      email: email || "",
+      picture: picture || "",
+    };
+    req.session.tokens = {
+        access_token: tokens.access_token!,
+        refresh_token: tokens.refresh_token ?? undefined,
+        expiry_date: tokens.expiry_date ?? undefined,
+    };
+
+    console.log("✅ Session user set:", req.session.user);
+
+    const redirectUrl = process.env.FRONTEND_URL?.split(",")[0] || "http://localhost:5173";
+    res.redirect(redirectUrl);
   } catch (error) {
-    console.error("❌ Error exchanging code:", error);
-    res.status(500).send("OAuth token exchange failed");
+    console.error("❌ Error during OAuth callback:", error);
+    res.status(500).send("OAuth callback failed");
+  }
+};
+
+// GET /api/auth/status
+export const checkAuthStatus = (req: Request, res: Response) => {
+  const user = req.session.user;
+  if (user) {
+    res.json({ authenticated: true, user });
+  } else {
+    res.json({ authenticated: false });
   }
 };

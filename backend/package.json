@@ -4,7 +4,8 @@
   "description": "Portfolio site using google sheets",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec ts-node index.ts"
   },
   "keywords": [],
   "author": "Evan Pavone",
@@ -13,14 +14,18 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "google-auth-library": "^9.15.1",
     "googleapis": "^149.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
+    "@types/express-session": "^1.18.2",
     "@types/node": "^22.15.21",
     "@types/open": "^6.2.1",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
