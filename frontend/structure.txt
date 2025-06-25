@@ -1,0 +1,41 @@
+.
+├── README.md
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── public
+│   └── vite.svg
+├── src
+│   ├── App.css
+│   ├── App.tsx
+│   ├── api
+│   │   └── index.ts
+│   ├── assets
+│   │   └── react.svg
+│   ├── components
+│   │   ├── Header.tsx
+│   │   ├── LoadMoreButton.tsx
+│   │   ├── LoginPage.tsx
+│   │   ├── ProjectCard.tsx
+│   │   ├── ProjectModal.tsx
+│   │   └── TagFilterBar.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── pages
+│   │   └── Home.tsx
+│   ├── styles
+│   │   └── theme.ts
+│   ├── types
+│   │   └── Project.ts
+│   ├── utils
+│   │   ├── parseCustomization.ts
+│   │   └── themeUtil.ts
+│   └── vite-env.d.ts
+├── structure.txt
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
+10 directories, 29 files

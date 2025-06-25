@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Link, Stack, Avatar, Button } from "@mui/material";
 
+const sheetId = import.meta.env.VITE_GOOGLE_SHEET_ID
 type Props = {
     user: { [key: string]: string };
 };
 
 const Header: React.FC<Props> = ({ user }) => {
+    const [loggedIn, setLoggedIn] = useState(false);
+
     const fullName = `${user["First Name"] ?? ""} ${user["Last Name"] ?? ""}`.trim();
+
+    useEffect(() => {
+        fetch("http://localhost:3001/api/auth/status", {
+            credentials: "include",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.authenticated) {  // <-- fix this line
+                    setLoggedIn(true);
+                    console.log("✅ Logged in: true");
+                }
+            })
+            .catch(() => {
+                setLoggedIn(false);
+                console.log("❌ Not logged in");
+            });
+    }, []);
 
     return (
         <Box sx={{ mb: 6, textAlign: "center" }}>
@@ -41,6 +61,24 @@ const Header: React.FC<Props> = ({ user }) => {
                         target="_blank"
                     >
                         Resume
+                    </Button>
+                )}
+                {loggedIn ? (
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        href={`https://docs.google.com/spreadsheets/d/${sheetId}/edit`}
+                        target="_blank"
+                    >
+                        Manage Sheet
+                    </Button>
+                ) : (
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => window.location.href = "http://localhost:3001/api/auth"}
+                    >
+                        Login with Google
                     </Button>
                 )}
             </Stack>

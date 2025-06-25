@@ -1,0 +1,58 @@
+.
+├── backend
+│   ├── auth.ts
+│   ├── config
+│   │   ├── googleClient.ts
+│   │   └── sheetRanges.json
+│   ├── controllers
+│   │   ├── auth.controller.ts
+│   │   ├── customization.controller.ts
+│   │   ├── images.controller.ts
+│   │   ├── projects.controller.ts
+│   │   └── user.controller.ts
+│   ├── index.ts
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── routes
+│   │   ├── auth.routes.ts
+│   │   ├── customization.routes.ts
+│   │   ├── images.routes.ts
+│   │   ├── projects.routes.ts
+│   │   └── user.routes.ts
+│   ├── services
+│   │   └── sheets.services.ts
+│   ├── structure.txt
+│   ├── temp-test.ts
+│   ├── tsconfig.json
+│   └── types
+│       └── express-session
+├── frontend
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── vite.svg
+│   ├── src
+│   │   ├── App.css
+│   │   ├── App.tsx
+│   │   ├── api
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── index.css
+│   │   ├── main.tsx
+│   │   ├── pages
+│   │   ├── styles
+│   │   ├── types
+│   │   ├── utils
+│   │   └── vite-env.d.ts
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   └── vite.config.ts
+├── package-lock.json
+├── package.json
+└── structure.txt
+
+18 directories, 38 files
