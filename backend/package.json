@@ -16,7 +16,8 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "google-auth-library": "^9.15.1",
-    "googleapis": "^149.0.0"
+    "googleapis": "^149.0.0",
+    "portfolio-app": "file:.."
   },
   "devDependencies": {
     "@types/cors": "^2.8.18",
