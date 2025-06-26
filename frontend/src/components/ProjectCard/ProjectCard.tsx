@@ -9,29 +9,20 @@ import {
   Chip,
   Box,
   Stack,
-  Link
+  Link,
 } from "@mui/material";
-import type { Project, ImageMap } from "../../types";
+import type { Project } from "../../types";
 
 interface ProjectCardProps {
   project: Project;
+  images: Record<string, string>;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const [images, setImages] = React.useState<ImageMap[]>([]);
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, images }) => {
+  const imageNames = project.Images.split(",").map((name) => name.trim());
+  const firstImageURL = images[imageNames[0]] || "";
 
-  React.useEffect(() => {
-    fetch("/api/images")
-      .then(res => res.json())
-      .then(setImages)
-      .catch(console.error);
-  }, []);
-
-  const imageNames = project.Images.split(",").map(name => name.trim());
-  const firstImageURL =
-    images.find(img => img["Image Name"] === imageNames[0])?.["Image URL"] ?? "";
-
-  const tags = project.Tags.split(",").map(tag => tag.trim());
+  const tags = project.Tags.split(",").map((tag) => tag.trim());
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -51,13 +42,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           {project.Description}
         </Typography>
         <Stack direction="row" spacing={1} flexWrap="wrap">
-          {tags.map(tag => (
+          {tags.map((tag) => (
             <Chip key={tag} label={tag} size="small" />
           ))}
         </Stack>
         {project.Github && (
           <Box mt={2}>
-            <Link href={project.Github} target="_blank" rel="noopener" underline="hover">
+            <Link
+              href={project.Github}
+              target="_blank"
+              rel="noopener"
+              underline="hover"
+            >
               View on GitHub
             </Link>
           </Box>

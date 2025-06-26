@@ -11,11 +11,14 @@ import {
   CardActions,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import type { Project, ImageMap } from "../../types";
+import type { Project } from "../../types";
 
-const ProjectSpotlight = () => {
+interface ProjectSpotlightProps {
+  images: Record<string, string>;
+}
+
+const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
   const [highlighted, setHighlighted] = React.useState<Project | null>(null);
-  const [images, setImages] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
     fetch("/api/projects")
@@ -23,17 +26,6 @@ const ProjectSpotlight = () => {
       .then((projects: Project[]) => {
         const spotlight = projects.find(p => p.Highlight === "TRUE");
         if (spotlight) setHighlighted(spotlight);
-      })
-      .catch(console.error);
-
-    fetch("/api/images")
-      .then(res => res.json())
-      .then((imgData: ImageMap[]) => {
-        const map: Record<string, string> = {};
-        imgData.forEach(img => {
-          map[img["Image Name"]] = img["Image URL"];
-        });
-        setImages(map);
       })
       .catch(console.error);
   }, []);

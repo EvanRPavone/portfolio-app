@@ -7,7 +7,11 @@ import ProjectCard from "../ProjectCard/ProjectCard";
 import TagFilterBar from "../TagFilter/TagFilterBar";
 import type { Project, Customization } from "../../types";
 
-const ProjectList = () => {
+interface ProjectListProps {
+  images: Record<string, string>;
+}
+
+const ProjectList: React.FC<ProjectListProps> = ({ images }) => {
   const [projects, setProjects] = React.useState<Project[]>([]);
   const [filtered, setFiltered] = React.useState<Project[]>([]);
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
@@ -76,7 +80,7 @@ const ProjectList = () => {
             sm={isGrid ? 6 : 12}
             md={isGrid ? 4 : 12}
           >
-            <ProjectCard project={project} />
+            <ProjectCard project={project} images={images} />
           </Grid>
         ))}
       </Grid>
