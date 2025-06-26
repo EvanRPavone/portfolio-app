@@ -44,46 +44,51 @@ const ProjectSpotlight = () => {
   const mainImageUrl = images[mainImageName] || "";
 
   return (
-    <Card
-      sx={{
-        mb: 6,
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        overflow: "hidden",
-      }}
-    >
-      {mainImageUrl && (
-        <CardMedia
-          component="img"
-          image={mainImageUrl}
-          alt={highlighted.Title}
-          sx={{ width: { md: 400 }, height: "100%", objectFit: "cover" }}
-        />
-      )}
+    <Box mb={6}>
+      <Typography variant="h5" fontWeight="bold" gutterBottom>
+        Project Spotlight
+      </Typography>
 
-      <Box display="flex" flexDirection="column" flex={1}>
-        <CardContent>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            {highlighted.Title}
-          </Typography>
-          <Typography variant="body1">{highlighted.Description}</Typography>
-        </CardContent>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          overflow: "hidden",
+        }}
+      >
+        {mainImageUrl && (
+          <CardMedia
+            component="img"
+            image={mainImageUrl}
+            alt={highlighted.Title}
+            sx={{ width: { md: 400 }, height: "100%", objectFit: "cover" }}
+          />
+        )}
 
-        <CardActions sx={{ px: 2, pb: 2 }}>
-          {highlighted.Github && (
-            <Button
-              variant="outlined"
-              size="small"
-              endIcon={<OpenInNewIcon />}
-              href={highlighted.Github}
-              target="_blank"
-            >
-              View Project
-            </Button>
-          )}
-        </CardActions>
-      </Box>
-    </Card>
+        <Box display="flex" flexDirection="column" flex={1}>
+          <CardContent>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              {highlighted.Title}
+            </Typography>
+            <Typography variant="body1">{highlighted.Description}</Typography>
+          </CardContent>
+
+          <CardActions sx={{ px: 2, pb: 2 }}>
+            {highlighted.Github && (
+              <Button
+                variant="outlined"
+                size="small"
+                endIcon={<OpenInNewIcon />}
+                href={highlighted.Github}
+                target="_blank"
+              >
+                View Project
+              </Button>
+            )}
+          </CardActions>
+        </Box>
+      </Card>
+    </Box>
   );
 };
 
