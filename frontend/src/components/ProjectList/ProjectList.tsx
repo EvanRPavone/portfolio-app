@@ -5,7 +5,8 @@ import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 import ProjectCard from "../ProjectCard/ProjectCard";
 import TagFilterBar from "../TagFilter/TagFilterBar";
-import type { Project, Customization } from "../../types";
+import ProjectModal from "../ProjectModal/ProjectModal";
+import type { Project } from "../../types";
 
 interface ProjectListProps {
   images: Record<string, string>;
@@ -15,9 +16,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ images }) => {
   const [projects, setProjects] = React.useState<Project[]>([]);
   const [filtered, setFiltered] = React.useState<Project[]>([]);
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-  const [customization, setCustomization] = React.useState<Customization | null>(null);
+  const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
 
-  // Fetch projects and customization settings
   React.useEffect(() => {
     fetch("/api/projects")
       .then((res) => res.json())
@@ -26,14 +26,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ images }) => {
         setFiltered(data);
       })
       .catch(console.error);
-
-    fetch("/api/customization")
-      .then((res) => res.json())
-      .then(setCustomization)
-      .catch(console.error);
   }, []);
 
-  // Update filtered projects when selectedTags change
   React.useEffect(() => {
     if (selectedTags.length === 0) {
       setFiltered(projects);
@@ -55,9 +49,13 @@ const ProjectList: React.FC<ProjectListProps> = ({ images }) => {
 
   const handleClearFilters = () => setSelectedTags([]);
 
-  if (!customization) return null;
+  const handleOpenModal = (project: Project) => {
+    setSelectedProject(project);
+  };
 
-  const isGrid = customization.layout === "grid";
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+  };
 
   return (
     <>
@@ -71,19 +69,28 @@ const ProjectList: React.FC<ProjectListProps> = ({ images }) => {
         onClear={handleClearFilters}
       />
 
-      <Grid container spacing={3} direction={isGrid ? "row" : "column"}>
+      <Grid container spacing={3}>
         {filtered.map((project) => (
           <Grid
             item
             key={project["Project ID"]}
             xs={12}
-            sm={isGrid ? 6 : 12}
-            md={isGrid ? 4 : 12}
+            sm={6}
+            md={4}
+            onClick={() => handleOpenModal(project)}
+            style={{ cursor: "pointer" }}
           >
             <ProjectCard project={project} images={images} />
           </Grid>
         ))}
       </Grid>
+
+      <ProjectModal
+        open={!!selectedProject}
+        onClose={handleCloseModal}
+        project={selectedProject}
+        images={images}
+      />
     </>
   );
 };

@@ -12,6 +12,7 @@ import {
   Link,
 } from "@mui/material";
 import type { Project } from "../../types";
+import removeMarkdown from "remove-markdown";
 
 interface ProjectCardProps {
   project: Project;
@@ -39,7 +40,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, images }) => {
           {project.Title}
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
-          {project.Description}
+          {removeMarkdown(project.Description)}
         </Typography>
         <Stack direction="row" spacing={1} flexWrap="wrap">
           {tags.map((tag) => (

@@ -19,13 +19,18 @@
     "@types/react-dom": "^18.2.17",
     "axios": "^1.10.0",
     "clsx": "^2.1.1",
+    "keen-slider": "^6.8.6",
     "portfolio-app": "file:..",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.6.2"
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.6.2",
+    "rehype-sanitize": "^6.0.0",
+    "remove-markdown": "^0.6.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@types/react-swipeable-views": "^0.13.6",
     "@vitejs/plugin-react": "^4.5.2",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
