@@ -1,9 +1,10 @@
 import React from "react";
 import { Box, Typography, Link, Stack } from "@mui/material";
+import { useAuth } from "../../hooks/useAuth";
 
 const Footer = () => {
-    const isOwner = true; // 🔐 Replace with real auth logic when ready
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${import.meta.env.VITE_GOOGLE_SHEET_ID}`;
+  const { isOwner } = useAuth(); // 🔐 Real auth check
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${import.meta.env.VITE_GOOGLE_SHEET_ID}`;
 
   return (
     <Box

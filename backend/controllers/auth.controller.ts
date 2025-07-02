@@ -1,3 +1,4 @@
+// portfolio-app/backend/controllers/auth.controller.ts
 /// <reference types="../types/express-session" />
 import { Response, Request } from "express";
 import { google } from "googleapis";
@@ -9,6 +10,7 @@ export const login = (_req: Request, res: Response): void => {
     "https://www.googleapis.com/auth/spreadsheets.readonly",
     "https://www.googleapis.com/auth/drive.readonly",
     "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email"
   ];
 
   const url = googleClient.generateAuthUrl({
@@ -65,7 +67,10 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
 export const checkAuthStatus = (req: Request, res: Response) => {
   const user = req.session.user;
   if (user) {
-    res.json({ authenticated: true, user });
+    console.log("user:", user);
+    const isOwner = user.email === process.env.OWNER_EMAIL;
+    console.log(isOwner)
+    res.json({ authenticated: true, user, isOwner });
   } else {
     res.json({ authenticated: false });
   }
