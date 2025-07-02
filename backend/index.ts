@@ -35,21 +35,6 @@ app.use(
 // Body parser
 app.use(express.json());
 
-const session = require("express-session");
-// Session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "default_secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false, // Set to true in production with HTTPS
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  })
-);
-
 // Health check
 app.get("/", (_req: Request, res: Response) => {
   res.send("✅ Portfolio backend is running!");

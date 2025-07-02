@@ -10,7 +10,7 @@ export const login = (_req: Request, res: Response): void => {
     "https://www.googleapis.com/auth/spreadsheets.readonly",
     "https://www.googleapis.com/auth/drive.readonly",
     "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/userinfo.email"
+    "https://www.googleapis.com/auth/userinfo.email",
   ];
 
   const url = googleClient.generateAuthUrl({
@@ -40,7 +40,7 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
 
     const { id, name, email, picture } = userInfoResponse.data;
 
-    // Save user and tokens into session (auto-typed via index.d.ts)
+    // Save user and tokens into session
     req.session.user = {
       id: id || "",
       name: name || "",
@@ -48,9 +48,9 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
       picture: picture || "",
     };
     req.session.tokens = {
-        access_token: tokens.access_token!,
-        refresh_token: tokens.refresh_token ?? undefined,
-        expiry_date: tokens.expiry_date ?? undefined,
+      access_token: tokens.access_token!,
+      refresh_token: tokens.refresh_token ?? undefined,
+      expiry_date: tokens.expiry_date ?? undefined,
     };
 
     console.log("✅ Session user set:", req.session.user);
@@ -64,12 +64,12 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
 };
 
 // GET /api/auth/status
-export const checkAuthStatus = (req: Request, res: Response) => {
-  const user = req.session.user;
-  if (user) {
-    console.log("user:", user);
-    const isOwner = user.email === process.env.OWNER_EMAIL;
-    console.log(isOwner)
+export const checkAuthStatus = (req: Request, res: Response): void => {
+  const user = req.session?.user;
+  const email = user?.email;
+
+  if (email) {
+    const isOwner = email === process.env.OWNER_EMAIL;
     res.json({ authenticated: true, user, isOwner });
   } else {
     res.json({ authenticated: false });
