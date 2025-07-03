@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:3001',
+      '/api': 'https://portfolio-backend-evan-992849bea84a.herokuapp.com/',
     },
   },
 });
