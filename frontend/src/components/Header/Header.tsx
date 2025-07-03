@@ -1,5 +1,3 @@
-// src/components/Header/Header.tsx
-
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,11 +8,8 @@ import Box from "@mui/material/Box";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LanguageIcon from "@mui/icons-material/Language";
-import Button from "@mui/material/Button";
-import { PictureAsPdf } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 
-// Types
 import type { UserInfo } from "../../types";
 
 const Header = () => {
@@ -37,14 +32,13 @@ const Header = () => {
       elevation={0}
       sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}
     >
-      <Toolbar
-        sx={{
-          justifyContent: "space-between",
-          py: 2,
-        }}
-      >
+      <Toolbar sx={{ justifyContent: "space-between", py: 2 }}>
         <Box display="flex" alignItems="center" gap={2}>
-          <Avatar src={user.picture} alt={user["First Name"]} sx={{ width: 48, height: 48 }} />
+          <Avatar
+            src={user.Picture || undefined}
+            alt={user["First Name"]}
+            sx={{ width: 48, height: 48 }}
+          />
           <Typography
             variant="h6"
             sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
@@ -54,19 +48,6 @@ const Header = () => {
         </Box>
 
         <Box display="flex" alignItems="center" gap={1}>
-          {user["Resume URL"] && (
-            <Button
-              variant="outlined"
-              size="small"
-              href={user["Resume URL"]}
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<PictureAsPdf />}
-              sx={{ color: "primary.main", borderColor: "primary.main" }}
-            >
-              Resume
-            </Button>
-          )}
           {user.Github && (
             <IconButton
               component="a"

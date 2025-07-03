@@ -1,9 +1,11 @@
+// src/components/Footer/Footer.tsx
+
 import React from "react";
 import { Box, Typography, Link, Stack } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
 
 const Footer = () => {
-  const { isOwner } = useAuth(); // 🔐 Real auth check
+  const auth = useAuth(); // ✅ get the whole object to track updates
   const sheetUrl = `https://docs.google.com/spreadsheets/d/${import.meta.env.VITE_GOOGLE_SHEET_ID}`;
 
   return (
@@ -22,7 +24,7 @@ const Footer = () => {
           © {new Date().getFullYear()} Evan Pavone. All rights reserved.
         </Typography>
 
-        {isOwner && (
+        {auth.isOwner && (
           <Link href={sheetUrl} target="_blank" rel="noopener" underline="hover">
             View Google Sheet
           </Link>

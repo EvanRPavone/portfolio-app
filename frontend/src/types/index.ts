@@ -8,7 +8,7 @@ export interface UserInfo {
   LinkedIn: string;
   Website: string;
   "Resume URL": string;
-  picture: string;
+  Picture: string;
 }
 
 // Represents global theme/layout customization pulled from /api/customization.

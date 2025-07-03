@@ -1,14 +1,21 @@
+// src/components/AboutCard/AboutCard.tsx
+
 import React from "react";
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import type { UserInfo } from "../../types";
-
 interface AboutCardProps {
   user: UserInfo;
 }
 
 const AboutCard: React.FC<AboutCardProps> = ({ user }) => {
-  const { "First Name": firstName, "Last Name": lastName, Bio, Location } = user;
+  const { "First Name": firstName, "Last Name": lastName, Bio, Location, "Resume URL": Resume } = user;
 
   return (
     <Card sx={{ mb: 4, p: 2 }}>
@@ -16,6 +23,7 @@ const AboutCard: React.FC<AboutCardProps> = ({ user }) => {
         <Typography variant="h6" gutterBottom>
           About {firstName} {lastName}
         </Typography>
+
         <Typography variant="body1" paragraph>
           {Bio}
         </Typography>
@@ -26,6 +34,20 @@ const AboutCard: React.FC<AboutCardProps> = ({ user }) => {
             <Typography variant="body2" color="text.secondary">
               {Location}
             </Typography>
+          </Box>
+        )}
+
+        {Resume && (
+          <Box mt={3}>
+            <Button
+              variant="outlined"
+              href={Resume}
+              target="_blank"
+              rel="noopener"
+              download
+            >
+              Resume
+            </Button>
           </Box>
         )}
       </CardContent>

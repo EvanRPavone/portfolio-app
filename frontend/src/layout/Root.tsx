@@ -10,20 +10,24 @@ const Root = () => {
   const [customization, setCustomization] = React.useState<Customization | null>(null);
 
   React.useEffect(() => {
-    fetch("/api/customization")
-      .then(res => res.json())
-      .then(data => setCustomization(data))
-      .catch(err => {
+    fetch("/api/customization", { credentials: "include" })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+      })
+      .then(setCustomization)
+      .catch((err) => {
         console.error("Failed to load customization:", err);
         setCustomization({
           primarycolor: "#ff9b00",
           secondarycolor: "#0049ff",
           font: "Inter",
           themestyle: "dark",
-          layout: "grid"
+          layout: "grid",
         });
       });
   }, []);
+
 
   if (!customization) return <div>Loading theme...</div>;
 

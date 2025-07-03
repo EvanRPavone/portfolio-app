@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import type { Project } from "../../types";
+import removeMarkdown from "remove-markdown";
 
 interface ProjectSpotlightProps {
   images: Record<string, string>;
@@ -62,7 +63,7 @@ const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               {highlighted.Title}
             </Typography>
-            <Typography variant="body1">{highlighted.Description}</Typography>
+            <Typography variant="body1">{removeMarkdown(highlighted.Description)}</Typography>
           </CardContent>
 
           <CardActions sx={{ px: 2, pb: 2 }}>
