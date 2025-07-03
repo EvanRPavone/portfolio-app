@@ -11,15 +11,20 @@
     "typeRoots": ["./node_modules/@types", "./types"],
     "types": ["node"],
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,        // ✅ For better interop
+    "declaration": false                         // ✅ Skip generating .d.ts on Heroku
   },
   "include": [
     "index.ts",
-    "controllers",
-    "routes",
-    "services",
-    "config",
-    "types",
-    "temp-test.ts"
+    "controllers/**/*",
+    "routes/**/*",
+    "services/**/*",
+    "config/**/*",
+    "types/**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }

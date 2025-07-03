@@ -1,12 +1,10 @@
 import express, { Application, Request, Response } from "express";
-// import * as session from "express-session";
+import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
 
-// Load environment variables
 dotenv.config();
 
-// Route imports
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import projectRoutes from "./routes/projects.routes";
@@ -16,7 +14,6 @@ import customizationRoutes from "./routes/customization.routes";
 const app: Application = express();
 const port = process.env.PORT || 3001;
 
-// CORS config
 const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [];
 
 app.use(
@@ -32,22 +29,26 @@ app.use(
   })
 );
 
-// Body parser
 app.use(express.json());
+
+// ✅ Add session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET!,
+  resave: false,
+  saveUninitialized: false,
+}));
 
 // Health check
 app.get("/", (_req: Request, res: Response) => {
   res.send("✅ Portfolio backend is running!");
 });
 
-// Mount routes
 app.use("/api", authRoutes);
 app.use("/api", projectRoutes);
 app.use("/api", userRoutes);
 app.use("/api", imagesRoutes);
 app.use("/api", customizationRoutes);
 
-// Start server
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });

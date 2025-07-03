@@ -40,7 +40,14 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
 
     const { id, name, email, picture } = userInfoResponse.data;
 
-    // Save user and tokens into session
+    // 🔐 Owner email check
+    if (email !== process.env.OWNER_EMAIL) {
+      console.warn("🚫 Unauthorized login attempt from:", email);
+      res.status(403).send("Access denied: not the site owner.");
+      return; // <== CRITICAL: Stop execution after sending response!
+    }
+
+    // ✅ Save user and tokens into session
     req.session.user = {
       id: id || "",
       name: name || "",
@@ -59,7 +66,9 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
     res.redirect(redirectUrl);
   } catch (error) {
     console.error("❌ Error during OAuth callback:", error);
-    res.status(500).send("OAuth callback failed");
+    if (!res.headersSent) {
+      res.status(500).send("OAuth callback failed");
+    }
   }
 };
 

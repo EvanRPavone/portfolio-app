@@ -6,16 +6,9 @@ const router = express.Router();
 
 router.get("/projects", getProjects);
 
-router.get("/tags", async (req, res) => {
+router.get("/tags", async (_req, res) => {
   try {
-    const accessToken = req.session.tokens?.access_token;
-
-    if (!accessToken) {
-      res.status(401).json({ error: "Unauthorized. Missing access token." });
-      return;
-    }
-
-    const tags = await getTagOptions(accessToken);
+    const tags = await getTagOptions(); // ✅ no access token needed anymore
     res.json(tags);
   } catch (err) {
     console.error("❌ Error fetching tag options:", err);

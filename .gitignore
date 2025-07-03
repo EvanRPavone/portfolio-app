@@ -15,3 +15,4 @@ frontend/dist/
 # Logs
 logs
 *.log
+backend/config/service-account.json
