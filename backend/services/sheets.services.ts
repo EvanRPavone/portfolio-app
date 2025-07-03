@@ -10,8 +10,7 @@ dotenv.config();
 
 // Load service account credentials from file
 const keyPath = path.join(__dirname, "../config/service-account.json");
-const keyFile = fs.readFileSync(keyPath, "utf-8");
-const credentials = JSON.parse(keyFile);
+const credentials = JSON.parse(process.env.SERVICE_ACCOUNT_JSON || "{}");
 
 // Set up JWT auth
 const scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"];

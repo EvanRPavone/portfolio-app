@@ -17,6 +17,7 @@ export const login = (_req: Request, res: Response): void => {
     access_type: "offline",
     scope: scopes,
     prompt: "consent",
+    redirect_uri: `${process.env.BACKEND_URL}/api/auth/callback`,
   });
 
   res.redirect(url);
