@@ -19,7 +19,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ images }) => {
   const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
 
   React.useEffect(() => {
-    fetch("/api/projects")
+    fetch(`${import.meta.env.VITE_API_BASE}/api/projects`)
       .then((res) => res.json())
       .then((data: Project[]) => {
         setProjects(data);

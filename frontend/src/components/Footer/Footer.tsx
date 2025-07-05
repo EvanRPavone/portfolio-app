@@ -1,6 +1,6 @@
 // src/components/Footer/Footer.tsx
 
-import React from "react";
+// import React from "react";
 import { Box, Typography, Link, Stack } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
 

@@ -17,7 +17,7 @@ const Header = () => {
   const [user, setUser] = React.useState<UserInfo | null>(null);
 
   React.useEffect(() => {
-    fetch("/api/userinfo")
+    fetch(`${import.meta.env.VITE_API_BASE}/api/userinfo`)
       .then(res => res.json())
       .then(data => setUser(data[0])) // API returns array
       .catch(err => console.error("Failed to load user info", err));

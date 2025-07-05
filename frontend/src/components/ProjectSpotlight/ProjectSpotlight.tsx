@@ -26,7 +26,7 @@ const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
   const theme = useTheme();
 
   React.useEffect(() => {
-    fetch("/api/projects")
+    fetch(`${import.meta.env.VITE_API_BASE}/api/projects`)
       .then(res => res.json())
       .then((projects: Project[]) => {
         const spotlight = projects.find(p => p.Highlight === "TRUE");

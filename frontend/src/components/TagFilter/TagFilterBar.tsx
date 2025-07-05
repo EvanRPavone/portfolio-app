@@ -14,7 +14,7 @@ const TagFilterBar: React.FC<TagFilterBarProps> = ({ selectedTags, onTagToggle, 
   const [tags, setTags] = React.useState<Tag[]>([]);
 
   React.useEffect(() => {
-    fetch("/api/tags")
+    fetch(`${import.meta.env.VITE_API_BASE}/api/tags`)
       .then(res => res.json())
       .then(setTags)
       .catch(console.error);

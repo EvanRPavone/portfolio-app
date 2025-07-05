@@ -10,7 +10,7 @@ const Root = () => {
   const [customization, setCustomization] = React.useState<Customization | null>(null);
 
   React.useEffect(() => {
-    fetch("/api/customization", { credentials: "include" })
+    fetch(`${import.meta.env.VITE_API_BASE}/api/customization`, { credentials: "include" })
       .then(async (res) => {
         if (!res.ok) throw new Error(await res.text());
         return res.json();

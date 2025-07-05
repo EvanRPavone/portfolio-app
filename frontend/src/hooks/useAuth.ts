@@ -16,7 +16,8 @@ export const useAuth = () => {
   const [auth, setAuth] = useState<AuthStatus>({ authenticated: false });
 
   useEffect(() => {
-    fetch("/api/auth/status", {
+    
+    fetch(`${import.meta.env.VITE_API_BASE}/api/auth/status`, {
       credentials: "include", // Important!
     })
       .then((res) => res.json())

@@ -18,7 +18,7 @@ const MainLayout = () => {
 
   // Fetch images
   React.useEffect(() => {
-    fetch("/api/images")
+    fetch(`${import.meta.env.VITE_API_BASE}/api/images`)
       .then((res) => res.json())
       .then((data: ImageMap[]) => {
         const imageMap: Record<string, string> = {};
@@ -32,7 +32,7 @@ const MainLayout = () => {
 
   // Fetch user info (for bio/location)
   React.useEffect(() => {
-    fetch("/api/userinfo")
+    fetch(`${import.meta.env.VITE_API_BASE}/api/userinfo`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data[0])) // assuming first item is you
       .catch(console.error);
