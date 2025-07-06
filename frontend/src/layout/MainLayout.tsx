@@ -1,5 +1,5 @@
 // portfolio-app/frontend/src/layout/MainLayout.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 

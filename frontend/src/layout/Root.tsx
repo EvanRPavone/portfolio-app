@@ -1,6 +1,6 @@
 // src/layout/Root.tsx
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import App from "../App";
 import { getCustomTheme } from "../theme/theme";
