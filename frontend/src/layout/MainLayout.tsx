@@ -1,4 +1,5 @@
-import React from "react";
+// portfolio-app/frontend/src/layout/MainLayout.tsx
+import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 
@@ -13,51 +14,52 @@ import Footer from "../components/Footer/Footer";
 import type { ImageMap, UserInfo } from "../types";
 
 const MainLayout = () => {
-  const [images, setImages] = React.useState<Record<string, string>>({});
-  const [userInfo, setUserInfo] = React.useState<UserInfo | null>(null); // NEW
+    const [images, setImages] = useState<Record<string, string>>({});
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-  // Fetch images
-  React.useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE}/api/images`)
-      .then((res) => res.json())
-      .then((data: ImageMap[]) => {
-        const imageMap: Record<string, string> = {};
-        data.forEach((img) => {
-          imageMap[img["Image Name"]] = img["Image URL"];
-        });
-        setImages(imageMap);
-      })
-      .catch(console.error);
-  }, []);
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_BASE}/api/images`)
+            .then((res) => res.json())
+            .then((data: ImageMap[]) => {
+                const imageMap: Record<string, string> = {};
+                data.forEach((img) => {
+                    imageMap[img["Image Name"]] = img["Image URL"];
+                });
+                setImages(imageMap);
+            })
+            .catch(console.error);
+    }, []);
 
-  // Fetch user info (for bio/location)
-  React.useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE}/api/userinfo`)
-      .then((res) => res.json())
-      .then((data) => setUserInfo(data[0])) // assuming first item is you
-      .catch(console.error);
-  }, []);
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_BASE}/api/userinfo`)
+            .then((res) => res.json())
+            .then((data) => setUserInfo(data[0]))
+            .catch(console.error);
+    }, []);
 
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: (theme) => theme.palette.background.default,
-      }}
-    >
-      <Header />
+    return (
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: (theme) => theme.palette.background.default,
+            }}
+        >
+            <Header />
 
-      <Container maxWidth="lg" sx={{ flexGrow: 1, py: 4 }}>
-        {userInfo && <AboutCard user={userInfo} />} {/* NEW */}
-        <ProjectSpotlight images={images} />
-        <ProjectList images={images} />
-      </Container>
+            <Container
+                maxWidth="lg"
+                sx={{ flexGrow: 1, py: { xs: 3, sm: 4 } }}
+            >
+                {userInfo && <AboutCard user={userInfo} />}
+                <ProjectSpotlight images={images} />
+                <ProjectList images={images} />
+            </Container>
 
-      <Footer />
-    </Box>
-  );
+            <Footer />
+        </Box>
+    );
 };
 
 export default MainLayout;
