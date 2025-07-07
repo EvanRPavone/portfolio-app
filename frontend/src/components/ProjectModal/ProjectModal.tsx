@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Dialog,
     DialogTitle,
@@ -41,6 +41,16 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ open, onClose, project, ima
     const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
     const [imageError, setImageError] = useState<Record<number, boolean>>({});
 
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [open]);
     const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
         slideChanged(slider) {
             setCurrentSlide(slider.track.details.rel);
@@ -65,8 +75,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ open, onClose, project, ima
             onClose={onClose}
             maxWidth="md"
             fullWidth
-            scroll="paper"
+            scroll="body"
             TransitionComponent={Transition}
+            disableScrollLock={false}
+            aria-labelledby="project-dialog-title"
         >
             <DialogTitle fontWeight="bold">{project.Title}</DialogTitle>
 

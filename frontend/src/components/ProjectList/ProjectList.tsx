@@ -67,7 +67,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ images, openModalId }) => {
 
     const handleCloseModal = () => {
         setSelectedProject(null);
-        navigate("/");
+        navigate("/", { replace: true });
     };
 
     return (
