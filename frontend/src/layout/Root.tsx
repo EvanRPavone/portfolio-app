@@ -18,6 +18,8 @@ const Root = () => {
     const [customization, setCustomization] = useState<Customization | null>(null);
 
     useEffect(() => {
+      console.log("API Base:", import.meta.env.VITE_API_BASE);
+
         fetch(`${import.meta.env.VITE_API_BASE}/api/customization`, {
             credentials: "include",
         })

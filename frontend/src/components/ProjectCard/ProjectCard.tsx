@@ -41,10 +41,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, images }) => {
         >
             {firstImageURL && (
                 <CardMedia
-                    component="img"
-                    image={firstImageURL}
-                    alt={project.Title || "Project image"}
-                    height="180"
+                  component="img"
+                  image={firstImageURL}
+                  alt={project.Title || "Project image"}
+                  height="180"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/fallback.png"; // Place a fallback image in /public
+                  }}
                 />
             )}
 

@@ -69,6 +69,10 @@ const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
                             objectFit: "cover",
                             flexShrink: 0,
                         }}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/fallback.png"; // Place a fallback image in /public
+                        }}
                     />
                 )}
 
