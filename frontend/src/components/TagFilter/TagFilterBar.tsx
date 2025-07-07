@@ -1,7 +1,5 @@
-// src/components/TagFilter/TagFilterBar.tsx
-
 import React, { useEffect, useState } from "react";
-import { Box, Chip, Typography } from "@mui/material";
+import { Box, Chip, Typography, Skeleton } from "@mui/material";
 import type { Tag } from "../../types";
 
 interface TagFilterBarProps {
@@ -16,12 +14,14 @@ const TagFilterBar: React.FC<TagFilterBarProps> = ({
     onClear,
 }) => {
     const [tags, setTags] = useState<Tag[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_BASE}/api/tags`)
             .then((res) => res.json())
             .then(setTags)
-            .catch(console.error);
+            .catch(console.error)
+            .finally(() => setLoading(false));
     }, []);
 
     return (
@@ -39,18 +39,28 @@ const TagFilterBar: React.FC<TagFilterBarProps> = ({
                     pb: 1,
                 }}
             >
-                {tags.map((tag) => (
-                    <Chip
-                        key={String(tag)}
-                        label={tag}
-                        clickable
-                        color={selectedTags.includes(tag) ? "primary" : "default"}
-                        onClick={() => onTagToggle(tag)}
-                        aria-label={`Filter by ${tag}`}
-                    />
-                ))}
+                {loading
+                    ? Array.from({ length: 6 }).map((_, i) => (
+                          <Skeleton
+                              key={i}
+                              variant="rounded"
+                              width={80}
+                              height={32}
+                              sx={{ borderRadius: 1 }}
+                          />
+                      ))
+                    : tags.map((tag) => (
+                          <Chip
+                              key={String(tag)}
+                              label={tag}
+                              clickable
+                              color={selectedTags.includes(tag) ? "primary" : "default"}
+                              onClick={() => onTagToggle(tag)}
+                              aria-label={`Filter by ${tag}`}
+                          />
+                      ))}
 
-                {selectedTags.length > 0 && (
+                {!loading && selectedTags.length > 0 && (
                     <Chip
                         label="Clear Filters"
                         clickable

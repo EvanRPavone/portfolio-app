@@ -1,5 +1,3 @@
-// src/components/ProjectSpotlight/ProjectSpotlight.tsx
-
 import React, { useEffect, useState } from "react";
 import {
     Box,
@@ -12,6 +10,7 @@ import {
     Chip,
     Stack,
     useTheme,
+    Skeleton,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ReactMarkdown from "react-markdown";
@@ -23,6 +22,8 @@ interface ProjectSpotlightProps {
 
 const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
     const [highlighted, setHighlighted] = useState<Project | null>(null);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
     const theme = useTheme();
 
     useEffect(() => {
@@ -37,7 +38,7 @@ const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
 
     if (!highlighted) return null;
 
-    const mainImageName = highlighted.Images.split(",")[0]?.trim();
+    const mainImageName = highlighted.Images?.split(",")[0]?.trim();
     const mainImageUrl = images[mainImageName] || "";
     const tags = highlighted.Tags?.split(",").map((t) => t.trim()) || [];
 
@@ -58,23 +59,43 @@ const ProjectSpotlight: React.FC<ProjectSpotlightProps> = ({ images }) => {
                     borderRadius: 2,
                 }}
             >
-                {mainImageUrl && (
-                    <CardMedia
-                        component="img"
-                        image={mainImageUrl}
-                        alt={highlighted.Title || "Project image"}
-                        sx={{
-                            width: { md: 400 },
-                            height: { xs: 200, md: "100%" },
-                            objectFit: "cover",
-                            flexShrink: 0,
-                        }}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = "/fallback.png"; // Place a fallback image in /public
-                        }}
-                    />
-                )}
+                <Box
+                    sx={{
+                        width: { md: 400 },
+                        height: { xs: 200, md: "100%" },
+                        position: "relative",
+                        flexShrink: 0,
+                    }}
+                >
+                    {!imageLoaded && !imageError && (
+                        <Skeleton
+                            variant="rectangular"
+                            width="100%"
+                            height="100%"
+                            sx={{ position: "absolute", top: 0, left: 0, borderRadius: 0 }}
+                        />
+                    )}
+                    {mainImageUrl && (
+                        <CardMedia
+                            component="img"
+                            image={mainImageUrl}
+                            alt={highlighted.Title || "Project image"}
+                            sx={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                display: imageLoaded ? "block" : "none",
+                            }}
+                            onLoad={() => setImageLoaded(true)}
+                            onError={(e) => {
+                                const img = e.currentTarget;
+                                img.src = "/fallback.png";
+                                setImageError(true);
+                                setImageLoaded(true);
+                            }}
+                        />
+                    )}
+                </Box>
 
                 <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
                     <CardContent>

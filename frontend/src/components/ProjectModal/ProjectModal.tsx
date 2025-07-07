@@ -1,5 +1,3 @@
-// src/components/ProjectModal/ProjectModal.tsx
-
 import React, { useState } from "react";
 import {
     Dialog,
@@ -11,6 +9,7 @@ import {
     Stack,
     Box,
     IconButton,
+    Skeleton,
 } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import type { TransitionProps } from "@mui/material/transitions";
@@ -39,6 +38,9 @@ const Transition = React.forwardRef(function Transition(
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ open, onClose, project, images }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
+    const [imageError, setImageError] = useState<Record<number, boolean>>({});
+
     const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
         slideChanged(slider) {
             setCurrentSlide(slider.track.details.rel);
@@ -78,21 +80,46 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ open, onClose, project, ima
                 {imageList.length > 0 && (
                     <Box mt={3} position="relative">
                         <Box ref={sliderRef} className="keen-slider">
-                            {imageList.map((url, idx) => (
-                                <Box
-                                    key={idx}
-                                    className="keen-slider__slide"
-                                    component="img"
-                                    src={url}
-                                    alt={`Project image ${idx + 1}`}
-                                    sx={{
-                                        width: "100%",
-                                        borderRadius: 2,
-                                        maxHeight: 400,
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            ))}
+                            {imageList.map((url, idx) => {
+                                const hasLoaded = imageLoaded[idx];
+                                const hasError = imageError[idx];
+                                return (
+                                    <Box
+                                        key={idx}
+                                        className="keen-slider__slide"
+                                        sx={{ position: "relative", height: 400 }}
+                                    >
+                                        {!hasLoaded && !hasError && (
+                                            <Skeleton
+                                                variant="rectangular"
+                                                width="100%"
+                                                height={400}
+                                                sx={{ borderRadius: 2 }}
+                                            />
+                                        )}
+                                        <Box
+                                            component="img"
+                                            src={url}
+                                            alt={`Project image ${idx + 1}`}
+                                            onLoad={() =>
+                                                setImageLoaded((prev) => ({ ...prev, [idx]: true }))
+                                            }
+                                            onError={(e) => {
+                                                const img = e.currentTarget as HTMLImageElement;
+                                                img.src = "/fallback.png";
+                                                setImageError((prev) => ({ ...prev, [idx]: true }));
+                                            }}
+                                            sx={{
+                                                width: "100%",
+                                                borderRadius: 2,
+                                                maxHeight: 400,
+                                                objectFit: "cover",
+                                                display: hasLoaded ? "block" : "none",
+                                            }}
+                                        />
+                                    </Box>
+                                );
+                            })}
                         </Box>
 
                         <Box

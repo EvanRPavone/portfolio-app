@@ -1,7 +1,11 @@
 // src/layout/Root.tsx
-
 import { useEffect, useState } from "react";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import {
+    CircularProgress,
+    Box,
+    ThemeProvider,
+    CssBaseline,
+} from "@mui/material";
 import App from "../App";
 import { getCustomTheme } from "../theme/theme";
 import type { Customization } from "../types";
@@ -18,16 +22,11 @@ const Root = () => {
     const [customization, setCustomization] = useState<Customization | null>(null);
 
     useEffect(() => {
-      console.log("API Base:", import.meta.env.VITE_API_BASE);
-
         fetch(`${import.meta.env.VITE_API_BASE}/api/customization`, {
             credentials: "include",
         })
             .then(async (res) => {
-                if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error(text);
-                }
+                if (!res.ok) throw new Error(await res.text());
                 return res.json();
             })
             .then(setCustomization)
@@ -38,7 +37,19 @@ const Root = () => {
     }, []);
 
     if (!customization) {
-        return <div aria-label="Loading theme">Loading theme...</div>;
+        return (
+            <Box
+                sx={{
+                    height: "100vh",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+                aria-label="Loading theme"
+            >
+                <CircularProgress color="secondary" />
+            </Box>
+        );
     }
 
     const theme = getCustomTheme(customization);

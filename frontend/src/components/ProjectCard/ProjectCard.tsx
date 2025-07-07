@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
@@ -8,6 +8,7 @@ import {
     Box,
     Stack,
     Link,
+    Skeleton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import type { Project } from "../../types";
@@ -20,6 +21,8 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, images }) => {
     const theme = useTheme();
+    const [imgLoaded, setImgLoaded] = useState(false);
+    const [imgError, setImgError] = useState(false);
 
     const imageNames = project.Images?.split(",").map((name) => name.trim()) || [];
     const firstImageURL = images[imageNames[0]] || "";
@@ -40,16 +43,28 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, images }) => {
             }}
         >
             {firstImageURL && (
-                <CardMedia
-                  component="img"
-                  image={firstImageURL}
-                  alt={project.Title || "Project image"}
-                  height="180"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/fallback.png"; // Place a fallback image in /public
-                  }}
-                />
+                <Box sx={{ position: "relative", height: 180 }}>
+                    {!imgLoaded && !imgError && (
+                        <Skeleton variant="rectangular" width="100%" height={180} />
+                    )}
+
+                    <CardMedia
+                        component="img"
+                        image={firstImageURL}
+                        alt={project.Title || "Project image"}
+                        height="180"
+                        onLoad={() => setImgLoaded(true)}
+                        onError={(e) => {
+                            setImgError(true);
+                            const img = e.currentTarget as HTMLImageElement;
+                            img.onerror = null;
+                            img.src = "/fallback.png";
+                        }}
+                        sx={{
+                            display: imgLoaded ? "block" : "none",
+                        }}
+                    />
+                </Box>
             )}
 
             <CardContent sx={{ flexGrow: 1 }}>
