@@ -1,6 +1,5 @@
 // portfolio-app/frontend/src/layout/MainLayout.tsx
 
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -21,14 +20,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ images, userInfo }) => {
-    const { projectId } = useParams(); // ⬅️ extract /:projectId
-    const [openModalId, setOpenModalId] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (projectId && projectId.startsWith("project_")) {
-            setOpenModalId(projectId);
-        }
-    }, [projectId]);
+    const { projectId } = useParams();
 
     return (
         <Box
@@ -44,7 +36,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ images, userInfo }) => {
             <Container maxWidth="lg" sx={{ flexGrow: 1, py: { xs: 3, sm: 4 } }}>
                 {userInfo && <AboutCard user={userInfo} />}
                 <ProjectSpotlight images={images} />
-                <ProjectList images={images} openModalId={openModalId} />
+                <ProjectList images={images} openModalId={projectId || null} />
             </Container>
 
             <Footer />

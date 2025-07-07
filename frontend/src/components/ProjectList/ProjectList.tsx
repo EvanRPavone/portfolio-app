@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Typography, Skeleton } from "@mui/material";
 import ProjectCard from "../ProjectCard/ProjectCard";
@@ -15,9 +15,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ images, openModalId }) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [filtered, setFiltered] = useState<Project[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(true);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,17 +24,10 @@ const ProjectList: React.FC<ProjectListProps> = ({ images, openModalId }) => {
             .then((data: Project[]) => {
                 setProjects(data);
                 setFiltered(data);
-
-                if (openModalId) {
-                    const match = data.find(p => p["Project ID"] === openModalId);
-                    if (match) {
-                        setSelectedProject(match);
-                    }
-                }
             })
             .catch(console.error)
             .finally(() => setLoading(false));
-    }, [openModalId]);
+    }, []);
 
     useEffect(() => {
         if (selectedTags.length === 0) {
@@ -52,6 +43,10 @@ const ProjectList: React.FC<ProjectListProps> = ({ images, openModalId }) => {
         setFiltered(filteredProjects);
     }, [selectedTags, projects]);
 
+    const selectedProject = useMemo(() => {
+        return openModalId ? projects.find(p => p["Project ID"] === openModalId) || null : null;
+    }, [openModalId, projects]);
+
     const handleTagToggle = (tag: string) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -61,13 +56,11 @@ const ProjectList: React.FC<ProjectListProps> = ({ images, openModalId }) => {
     const handleClearFilters = () => setSelectedTags([]);
 
     const handleOpenModal = (project: Project) => {
-        setSelectedProject(project);
         navigate(`/${project["Project ID"]}`);
     };
 
     const handleCloseModal = () => {
-        setSelectedProject(null);
-        navigate("/", { replace: true });
+        navigate("/");
     };
 
     return (
