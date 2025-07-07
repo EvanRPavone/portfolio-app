@@ -2,8 +2,7 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-    // This replaces process.cwd() safely in Vite 5 bundler mode
-    const env = loadEnv(mode, new URL('.', import.meta.url).pathname, '');
+    const env = loadEnv(mode, process.cwd(), ''); // ✅ FIXED
 
     return {
         plugins: [react()],
