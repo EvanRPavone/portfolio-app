@@ -124,4 +124,4 @@ npm run build
 
 ## License
 
-MIT © [Your Name]
+MIT © Evan Pavone
